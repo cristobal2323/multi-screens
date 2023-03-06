@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import PropTypes from "prop-types";
+import { withRouter, Switch, Route } from "react-router-dom";
 
-function App() {
+import Home from "./home";
+import Contact from "./contact";
+import About from "./about";
+
+const Main = ({ location }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/contact" component={Contact} />
+        <Route path="/about" component={About} />
+      </Switch>
     </div>
   );
-}
+};
 
-export default App;
+Main.propTypes = {
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
+};
+
+export default withRouter(Main);
