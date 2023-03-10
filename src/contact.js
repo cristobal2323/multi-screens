@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import Widgets from "./widgets";
+
 
 function Contact() {
+  const [components, setComponents] = useState([])
+
   useEffect(() => {
     var oldX = window.screenX,
       oldY = window.screenY;
@@ -36,13 +40,45 @@ function Contact() {
     };
   }, [])
 
+  function onDrop(event) {
+    const id = event
+      .dataTransfer
+      .getData('text');
+  
+    /* const draggableElement = document.getElementById(id);
+    const dropzone = event.target;
+   */
+
+    const arr = [...components];
+
+    arr.push(Widgets[id])
+
+    setComponents(arr);
+
+  
+  
+    //dropzone.appendChild(draggableElement);
+  /*   event
+      .dataTransfer
+      .clearData(); */
+  }
+  
+  function onDragOver(event) {
+    event.preventDefault();
+  }
+  
+
   return (
     <div className='App' style={{background: "red", width: "100vw", height: "100vh"}}>
       <h1>Contact</h1>
-      <button>
-        Save position
-      </button>
-
+       <div
+        className="example-dropzone"
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+      >
+        Drop here    
+      </div>
+      {components}
     </div>
   );
 
