@@ -31,6 +31,8 @@ function App() {
       window.removeEventListener('storage', checkDrop)
     }
   }, [])
+
+
   return (
     <section>
       <h1>Multy screen.</h1>

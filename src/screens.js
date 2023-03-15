@@ -38,12 +38,13 @@ const createPopup = (width, height ,screenX, screenY, screen, page) => {
 
 const isSupported = "getScreens" in window || "getScreenDetails";
 
-const getScreensInfo = async () => {
+const getScreensInfo = async (pages) => {
   if (isSupported && (window.getScreens || window.getScreenDetails) ) {
     if (cachedScreens) {
       return cachedScreens.screens;
     } else {
       cachedScreens = "getScreens" in window ? await window.getScreens() : await window.getScreenDetails();
+      console.log(cachedScreens)
       cachedScreens.addEventListener("screenschange", async e => {
         console.log("screenschange", e);
         closeAllPopups();
@@ -55,7 +56,13 @@ const getScreensInfo = async () => {
       return cachedScreens.screens;
     }
   }
-  return [window.screen];
+  const arrPages = []
+  console.log(window.screen)
+  pages.forEach((e)=>{
+    arrPages.push(window.screen)
+  })
+
+  return arrPages;
 };
 
 const onPopupClose = e => {
@@ -116,13 +123,11 @@ const elmerify = async (pages) => {
     return;
   }
   
-  const screens = localStorage.getItem("screens") ? JSON.parse(localStorage.getItem("screens")) : await getScreensInfo();
+  const screens = localStorage.getItem("screens") ? JSON.parse(localStorage.getItem("screens")) : await getScreensInfo(pages);
 
   popups = [];
   screens.forEach((screen, numScreen) => {
     loop: for (let i = 0; i < COLS; i++) {
-      for (let j = 0; j < ROWS; j++) {
-
         // feature screen 
         let width = Math.floor((screen.availWidth - COLS * WINDOW_CHROME_X) / COLS);
         let height = Math.floor(
@@ -130,7 +135,8 @@ const elmerify = async (pages) => {
         );
 
         let screenX = i * width + screen.availLeft + i * WINDOW_CHROME_X;
-        let screenY = j * height + screen.availTop + j * WINDOW_CHROME_Y;
+        //let screenY = j * height + screen.availTop + j * WINDOW_CHROME_Y;
+        let screenY = screen.availTop;
     
         let sendpage = screen.page ? screen.page : pages[numScreen];
         const popup = createPopup(width, height, screenX, screenY, screen, sendpage);
@@ -144,7 +150,7 @@ const elmerify = async (pages) => {
         //popup.addEventListener("beforeunload", onPopupClose);
         //popup.addEventListener("click", onPopupClick);
         popups.push(popup);
-      }
+      
     }
   });
   
