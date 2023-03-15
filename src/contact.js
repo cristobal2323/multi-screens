@@ -11,7 +11,7 @@ function Contact() {
 
     var interval = setInterval(function () {
       if (oldX != window.screenX || oldY != window.screenY) {
-        console.log('moved!',  window.location.href );
+        //console.log('moved!',  window.location.href );
 
         let screens = localStorage.getItem("screens");
         screens = screens ? JSON.parse(screens) : [];
@@ -25,11 +25,11 @@ function Contact() {
          
           const obj = {availHeight: window.screen.availHeight, availTop: window.screen.availTop, availLeft: window.screen.availLeft, availWidth: window.screen.availWidth, page: window.location.href };
           screens.push(obj)
-          console.log(screens)
+          //console.log(screens)
           localStorage.setItem("screens", JSON.stringify(screens)); 
         }
       } else {
-        console.log('not moved!', window.screen);
+        //console.log('not moved!', window.screen);
       }
 
       oldX = window.screenX;
@@ -52,7 +52,7 @@ function Contact() {
     const arr = [...components];
 
     arr.push(Widgets[id])
-
+    localStorage.setItem("drop", id);
     setComponents(arr);
 
   

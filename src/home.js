@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import MultiScreen from "./screens.js"
 
@@ -16,8 +16,21 @@ function onDragStart(event) {
 }
 
 
-
 function App() {
+
+  useEffect(() => {
+    function checkDrop() {
+      const item = localStorage.getItem('drop')
+      const element = document.getElementById(item);
+      element.remove();
+    }
+  
+    window.addEventListener('storage', checkDrop)
+  
+    return () => {
+      window.removeEventListener('storage', checkDrop)
+    }
+  }, [])
   return (
     <section>
       <h1>Multy screen.</h1>
