@@ -22,7 +22,9 @@ function App() {
     function checkDrop() {
       const item = localStorage.getItem('drop')
       const element = document.getElementById(item);
-      element.remove();
+      if(element){
+        element.remove();
+      }
     }
   
     window.addEventListener('storage', checkDrop)
@@ -37,7 +39,7 @@ function App() {
     <section>
       <h1>Multy screen.</h1>
       <button type="button" onClick={() => MultiScreen([`${window.location.origin}/contact`, `${window.location.origin}/about`])}>
-        Open screens
+        Open windows
       </button>
 
       <div className="example-parent">
